@@ -6,8 +6,6 @@ formulario.addEventListener("submit", async function(event) {
     const status = document.getElementById("itemStatus");
     status.textContent = "Salvando item...";
 
-    const dados = Object.fromEntries(new FormData(formulario));
-
     try {
       const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
       if (userError) throw userError;
