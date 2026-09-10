@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Sistema de Controle de Entregas</title>
+   <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+  <h1>Cerâmica Riachuelo</h1>
+<div id="login"> 
+
+   <h2>Login de Funcionário</h2>
+  <input type="text" id="usuario" placeholder="e-mail">
+  <br><br>
+  <input type="password"  id="senha" placeholder="Senha">
+  <br><br>
+  <button onclick="entrar()">Entrar</button>
+  <br><br>
+  <button type="button" onclick="mostrarCadastroUsuario()">Criar usuário</button>
+  <br><br>
+  <button onclick="recuperarSenha()">Recuperar Senha</button>
+
+</div>
+
+<div id="cadastroUsuario" class="card">
+  <h2>Criar usuário</h2>
+  <input type="text" id="novoNome" placeholder="Nome completo">
+  <br><br>
+  <input type="email" id="novoEmail" placeholder="E-mail">
+  <br><br>
+  <input type="password" id="novaSenha" placeholder="Senha (mínimo 6 caracteres)">
+  <br><br>
+  <button type="button" onclick="cadastrarUsuario()">Cadastrar</button>
+  <button type="button" onclick="voltarLogin()">Voltar</button>
+</div>
+
+<div id="dashboard" class="card">
+  <h2>Menu</h2>
+  <button type="button" onclick="showCadastroItem()">Cadastrar Item</button>
+  <button type="button" onclick="showProducao()">Produção e estoque</button>
+  <button type="button" onclick="showMovimentacao()">Movimentação de estoque</button>
+  <button type="button" onclick="showHistorico()">Histórico</button>
+  <button type="button" onclick="logout()">Sair</button>
+</div>
+
+<div id="producao">
+  <div class="card">
+    <h2>Produção e estoque</h2>
+    <p id="producaoStatus" class="status" aria-live="polite"></p>
+    <form id="formProducao">
+      <h3>Registrar produção</h3>
+      <label for="producaoData">Data:</label>
+      <input type="date" id="producaoData" required>
+      <label for="producaoProduto">Produto:</label>
+      <select id="producaoProduto" required></select>
+      <label for="quantidadeProduzida">Quantidade produzida:</label>
+      <input type="number" id="quantidadeProduzida" min="1" required>
+      <label for="quantidadeDefeituosa">Quantidade defeituosa:</label>
+      <input type="number" id="quantidadeDefeituosa" min="0" value="0" required>
+      <button type="submit">Registrar produção</button>
+    </form>
+    <form id="formMeta">
+      <h3>Definir meta</h3>
+      <label for="metaData">Data:</label>
+      <input type="date" id="metaData" required>
+      <label for="metaProduto">Produto:</label>
+      <select id="metaProduto" required></select>
+      <label for="metaQuantidade">Quantidade planejada:</label>
+      <input type="number" id="metaQuantidade" min="1" required>
+      <button type="submit">Salvar meta</button>
+    </form>
+    <button type="button" class="btn-Voltar" onclick="retornarDashboard()">Voltar</button>
+  </div>
+</div>
+
+<div id="movimentacaoEstoque">
+  <div class="card">
+    <h2>Movimentação de estoque</h2>
+    <p id="movimentacaoStatus" class="status" aria-live="polite"></p>
+    <form id="formMovimentacao">
+      <label for="movimentoMaterial">Item:</label>
+      <select id="movimentoMaterial" required></select>
+      <label for="tipoMovimento">Tipo:</label>
+      <select id="tipoMovimento" required>
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+        <option value="ajuste">Ajuste</option>
+      </select>
+      <label for="quantidadeMovimento">Quantidade:</label>
+      <input type="number" id="quantidadeMovimento" min="0.01" step="0.01" required>
+      <label for="observacaoMovimento">Observação:</label>
+      <input type="text" id="observacaoMovimento">
+      <label for="itemEndereco">Endereço:</label>
+      <input
+       type="text"
+        id="itemEndereco"
+         name="itemEndereco"
+          placeholder="Endereço do cliente"
+          required>
+      <button type="submit">Salvar movimentação</button>
+    </form>
+    <button type="button" class="btn-Voltar" onclick="retornarDashboard()">Voltar</button>
+  </div>
+</div>
+
+<div id="historicoEntrega">
+  <div class="card">
+    <h2>Histórico de Entregas</h2>
+    <p id="historicoStatus" class="status" aria-live="polite"></p>
+    
+    <input type="text" id="searchUp" onkeyup="searchUp()" placeholder="Pesquisar entregas..."></input>
+
+    <div class="tabelaHistorico">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Item</th>
+            <th>Quantidade</th>
+            <th>Cliente</th>
+            <th>Endereço</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="historicoLista"></tbody>
+      </table>
+    </div>
+    <button type="button" class="btn-Voltar" onclick="retornarDashboard()">Voltar</button>
+  </div>
+</div>
+
+<div id="cadastroItem">
+   <div class="card">
+  <p id="itemStatus" class="status" aria-live="polite"></p>
+    <form id="formItem">
+      
+      <label for="operador">Operador:</label>
+      <input
+       type="text"
+        id="operador"
+         name="operador"
+          placeholder="Nome do operador"
+          required>
+
+      <label for="itemData">Data de Cadastro:</label>
+      <input
+       type="date"
+        id="itemData"
+        name="dataCadastro"
+        required>
+
+      <label for="itemNome">Nome do Item:</label>
+      <input
+       type="text"
+        id="itemNome"
+         name="itemNome"
+          placeholder="Nome do item"
+          required>
+
+      <label for="itemCliente">Cliente:</label>
+      <input
+       type="text"
+        id="itemCliente"
+         name="itemCliente"
+          placeholder="Nome do cliente"
+          required>
+
+      <label for="itemQtd">Quantidade:</label>
+      <input
+       type="number"
+        id="itemQtd"
+         name="itemQtd"
+          min="1"
+           value="1"
+           required>
+
+      <label for="itemPreco">Preço:</label>
+      <input
+       type="number"
+        id="itemPreco"
+         name="itemPreco"
+          placeholder="Ex:0.01"
+           step="0.01"
+            min="0"
+            required>
+      <div class="botoesMenu">
+        <button type="submit" class="btn-cadastrar">Cadastrar Item</button>
+        <button type="button" id="btnLimparItem" class="btn-Limpar">Limpar</button>
+        <button type="button" id="btnVoltarItem" class="btn-Voltar" onclick="retornarDashboard()">Voltar</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<footer>
+    <p>&copy; Criado por Opal's Remedy.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="supabase-config.js"></script>
+<script src="script1.js"></script>
+<script src="script2.js"></script>
+<script src="production.js"></script>
+
+</body>
+</html>
