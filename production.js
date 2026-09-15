@@ -83,17 +83,16 @@ async function handleGoalSubmit(event) {
 async function handleMaterialSubmit(event) {
     event.preventDefault();
     const payload = {
-        code: document.getElementById("materialCodigo").value.trim(),
-        name: document.getElementById("materialNome").value.trim(),
-        unit: document.getElementById("materialUnidade").value.trim(),
-        minimum_stock: Number(document.getElementById("materialMinimo").value),
+        name: document.getElementById("itemNome").value.trim(),
+        unit: document.getElementById("itemPreco").value.trim(),
+        minimum_stock: Number(document.getElementById("itemQtd").value),
         active: true
     };
     const { data: existing, error: findError } = await supabaseClient.from("materials").select("id").eq("code", payload.code).maybeSingle();
     if (findError) throw findError;
     const request = existing
-        ? supabaseClient.from("materials").update(payload).eq("id", existing.id)
-        : supabaseClient.from("materials").insert(payload);
+        ? supabaseClient.from("products").update(payload).eq("id", existing.id)
+        : supabaseClient.from("products").insert(payload);
     const { error } = await request;
     if (error) throw error;
     event.target.reset();
